@@ -1,0 +1,11 @@
+{
+  "name": "capacity-connect",
+  "version": "1.0.0",
+  "description": "CAPACITY CONNECT – A Digital Capacity Building and Learning Management Portal",
+  "scripts": {
+    "start": "npm --prefix backend start",
+    "dev": "npm --prefix backend run dev",
+    "seed": "npm --prefix backend run seed",
+    "test:api": "node backend/test-api.js"
+  }
+}

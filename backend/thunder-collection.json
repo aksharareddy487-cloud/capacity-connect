@@ -1,0 +1,143 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "Capacity Connect - Backend API",
+  "collectionId": "capacity-connect-api",
+  "dateExported": "2026-09-08",
+  "version": "1.1",
+  "folders": [
+    { "_id": "f_auth", "name": "1. Authentication", "containerId": "" },
+    { "_id": "f_courses", "name": "2. Courses", "containerId": "" },
+    { "_id": "f_enroll", "name": "3. Enrollments & Progress", "containerId": "" },
+    { "_id": "f_competency", "name": "4. Competency Gap Engine", "containerId": "" },
+    { "_id": "f_admin", "name": "5. Admin & Analytics", "containerId": "" }
+  ],
+  "requests": [
+    {
+      "_id": "req_health",
+      "colId": "capacity-connect-api",
+      "name": "Health Check",
+      "url": "http://localhost:5000/api/health",
+      "method": "GET"
+    },
+    {
+      "_id": "req_login_trainee",
+      "colId": "capacity-connect-api",
+      "containerId": "f_auth",
+      "name": "Login Trainee (Aarav)",
+      "url": "http://localhost:5000/api/auth/login",
+      "method": "POST",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"trainee@capacityconnect.gov.in\",\n  \"password\": \"trainee123\"\n}"
+      }
+    },
+    {
+      "_id": "req_login_trainer",
+      "colId": "capacity-connect-api",
+      "containerId": "f_auth",
+      "name": "Login Trainer (Prof Sunita)",
+      "url": "http://localhost:5000/api/auth/login",
+      "method": "POST",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"trainer@capacityconnect.gov.in\",\n  \"password\": \"trainer123\"\n}"
+      }
+    },
+    {
+      "_id": "req_signup",
+      "colId": "capacity-connect-api",
+      "containerId": "f_auth",
+      "name": "Signup New User",
+      "url": "http://localhost:5000/api/auth/signup",
+      "method": "POST",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Suresh Naidu\",\n  \"email\": \"suresh@capacityconnect.gov.in\",\n  \"password\": \"password123\",\n  \"role\": \"trainee\",\n  \"department\": \"Revenue\",\n  \"targetRole\": \"E-Governance Program Officer\",\n  \"currentSkills\": [\"Basic Computer Operations\"]\n}"
+      }
+    },
+    {
+      "_id": "req_get_courses",
+      "colId": "capacity-connect-api",
+      "containerId": "f_courses",
+      "name": "Get All Courses",
+      "url": "http://localhost:5000/api/courses",
+      "method": "GET"
+    },
+    {
+      "_id": "req_create_course",
+      "colId": "capacity-connect-api",
+      "containerId": "f_courses",
+      "name": "Create Course (Trainer)",
+      "url": "http://localhost:5000/api/courses",
+      "method": "POST",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"title\": \"Digital Land Records Management\",\n  \"description\": \"Course on modernizing cadastre and land registration records.\",\n  \"category\": \"E-Governance\",\n  \"duration\": \"3 Hours\",\n  \"level\": \"Beginner\",\n  \"skillsTaught\": [\"Digital Tools & Workflow Automation\"]\n}"
+      }
+    },
+    {
+      "_id": "req_course_trainees",
+      "colId": "capacity-connect-api",
+      "containerId": "f_courses",
+      "name": "Get Enrolled Trainees for Course",
+      "url": "http://localhost:5000/api/courses/course-103/trainees",
+      "method": "GET"
+    },
+    {
+      "_id": "req_enroll",
+      "colId": "capacity-connect-api",
+      "containerId": "f_enroll",
+      "name": "Enroll User in Course",
+      "url": "http://localhost:5000/api/enroll",
+      "method": "POST",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"userId\": \"user-trainee-1\",\n  \"courseId\": \"course-101\"\n}"
+      }
+    },
+    {
+      "_id": "req_user_progress",
+      "colId": "capacity-connect-api",
+      "containerId": "f_enroll",
+      "name": "Get User Progress",
+      "url": "http://localhost:5000/api/progress/user-trainee-1",
+      "method": "GET"
+    },
+    {
+      "_id": "req_update_progress",
+      "colId": "capacity-connect-api",
+      "containerId": "f_enroll",
+      "name": "Update Course Progress",
+      "url": "http://localhost:5000/api/progress/enroll-2",
+      "method": "PUT",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"progress\": 80\n}"
+      }
+    },
+    {
+      "_id": "req_competency_gaps",
+      "colId": "capacity-connect-api",
+      "containerId": "f_competency",
+      "name": "Get Competency Gaps & Course Recommendations",
+      "url": "http://localhost:5000/api/competency-gaps/user-trainee-1",
+      "method": "GET"
+    },
+    {
+      "_id": "req_admin_users",
+      "colId": "capacity-connect-api",
+      "containerId": "f_admin",
+      "name": "Admin - Get All Users",
+      "url": "http://localhost:5000/api/admin/users",
+      "method": "GET"
+    },
+    {
+      "_id": "req_admin_stats",
+      "colId": "capacity-connect-api",
+      "containerId": "f_admin",
+      "name": "Admin - Summary Stats & Chart Data",
+      "url": "http://localhost:5000/api/admin/stats",
+      "method": "GET"
+    }
+  ]
+}
