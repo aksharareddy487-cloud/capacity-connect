@@ -53,7 +53,15 @@ const trainees = [
 ];
 
 export default function TrainerDashboard() {
-  const [courses, setCourses] = useState(initialCourses);
+  // Load saved courses from localStorage.
+  // If there are no saved courses, use the initial courses.
+  const [courses, setCourses] = useState(() => {
+    const savedCourses = localStorage.getItem("trainerCourses");
+
+    return savedCourses
+      ? JSON.parse(savedCourses)
+      : initialCourses;
+  });
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -62,20 +70,36 @@ export default function TrainerDashboard() {
   const handleCreateCourse = (e) => {
     e.preventDefault();
 
-    if (!title || !description || !tags) {
+    // Check that all fields are filled
+    if (!title.trim() || !description.trim() || !tags.trim()) {
       alert("Please fill in all fields");
       return;
     }
 
+    // Create the new course
     const newCourse = {
-      id: courses.length + 1,
-      title: title,
-      description: description,
-      tags: tags.split(",").map((tag) => tag.trim()),
+      id: Date.now(),
+      title: title.trim(),
+      description: description.trim(),
+      tags: tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== ""),
     };
 
-    setCourses([...courses, newCourse]);
+    // Add the new course to the existing courses
+    const updatedCourses = [...courses, newCourse];
 
+    // Update React state
+    setCourses(updatedCourses);
+
+    // Save courses in browser storage
+    localStorage.setItem(
+      "trainerCourses",
+      JSON.stringify(updatedCourses)
+    );
+
+    // Clear the form
     setTitle("");
     setDescription("");
     setTags("");
@@ -92,9 +116,10 @@ export default function TrainerDashboard() {
         margin: "auto",
       }}
     >
+      {/* PAGE TITLE */}
       <h1>Trainer Dashboard</h1>
 
-      {/* CREATE COURSE */}
+      {/* ================= CREATE COURSE ================= */}
       <div
         style={{
           border: "1px solid #ccc",
@@ -106,6 +131,7 @@ export default function TrainerDashboard() {
         <h2>Create Course</h2>
 
         <form onSubmit={handleCreateCourse}>
+          {/* COURSE TITLE */}
           <div style={{ marginBottom: "15px" }}>
             <label>Course Title</label>
 
@@ -118,6 +144,7 @@ export default function TrainerDashboard() {
             />
           </div>
 
+          {/* DESCRIPTION */}
           <div style={{ marginBottom: "15px" }}>
             <label>Description</label>
 
@@ -130,6 +157,7 @@ export default function TrainerDashboard() {
             />
           </div>
 
+          {/* SKILL TAGS */}
           <div style={{ marginBottom: "15px" }}>
             <label>Skill Tags</label>
 
@@ -142,6 +170,7 @@ export default function TrainerDashboard() {
             />
           </div>
 
+          {/* CREATE BUTTON */}
           <button
             type="submit"
             style={{
@@ -159,7 +188,7 @@ export default function TrainerDashboard() {
         </form>
       </div>
 
-      {/* MY COURSES */}
+      {/* ================= MY COURSES ================= */}
       <h2>My Courses</h2>
 
       <div
@@ -189,7 +218,7 @@ export default function TrainerDashboard() {
         ))}
       </div>
 
-      {/* ENROLLED TRAINEES */}
+      {/* ================= ENROLLED TRAINEES ================= */}
       <div style={{ marginTop: "40px" }}>
         <h2>Enrolled Trainees</h2>
 
@@ -243,6 +272,8 @@ export default function TrainerDashboard() {
   );
 }
 
+/* ================= INPUT STYLE ================= */
+
 const inputStyle = {
   display: "block",
   width: "100%",
@@ -253,6 +284,8 @@ const inputStyle = {
   borderRadius: "6px",
   fontSize: "15px",
 };
+
+/* ================= TABLE STYLES ================= */
 
 const tableHeaderStyle = {
   padding: "12px",
