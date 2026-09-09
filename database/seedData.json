@@ -1,0 +1,191 @@
+{
+  "users": [
+    {
+      "id": "user-admin-1",
+      "name": "Dr. Ramesh Varma",
+      "email": "admin@capacityconnect.gov.in",
+      "password": "admin123",
+      "role": "admin",
+      "department": "Department of Administrative Reforms & Public Grievances (DARPG)",
+      "designation": "Joint Secretary & Capacity Director",
+      "currentSkills": ["Policy Framework Design", "Strategic Workforce Planning", "Public Administration"]
+    },
+    {
+      "id": "user-trainer-1",
+      "name": "Prof. Sunita Deshmukh",
+      "email": "trainer@capacityconnect.gov.in",
+      "password": "trainer123",
+      "role": "trainer",
+      "department": "National Institute of Smart Government (NISG)",
+      "designation": "Principal Capacity Building Expert",
+      "currentSkills": ["E-Governance Architecture", "Data Analytics", "Curriculum Design", "GovCloud"]
+    },
+    {
+      "id": "user-trainee-1",
+      "name": "Aarav Sharma",
+      "email": "trainee@capacityconnect.gov.in",
+      "password": "trainee123",
+      "role": "trainee",
+      "department": "Ministry of Rural Development",
+      "designation": "Assistant Section Officer",
+      "targetRole": "E-Governance Program Officer",
+      "currentSkills": ["Citizen Centric Service Delivery"]
+    },
+    {
+      "id": "user-trainee-2",
+      "name": "Ananya Patel",
+      "email": "ananya@capacityconnect.gov.in",
+      "password": "trainee123",
+      "role": "trainee",
+      "department": "Ministry of Health & Family Welfare",
+      "designation": "Field Research Assistant",
+      "targetRole": "Public Health Data Analyst",
+      "currentSkills": ["Data Entry", "Basic Excel", "Healthcare Records"]
+    }
+  ],
+  "skills": [
+    { "id": "skill-1", "name": "Cloud Computing in Public Sector", "category": "Technical" },
+    { "id": "skill-2", "name": "Data Analysis & Decision Making", "category": "Technical" },
+    { "id": "skill-3", "name": "Citizen Centric Service Delivery", "category": "Administrative" },
+    { "id": "skill-4", "name": "Cybersecurity & Data Privacy (DPDP Act)", "category": "Compliance" },
+    { "id": "skill-5", "name": "Digital Tools & Workflow Automation", "category": "Technical" },
+    { "id": "skill-6", "name": "Public Financial Management & GeM", "category": "Administrative" },
+    { "id": "skill-7", "name": "Effective Public Communication & RTI", "category": "Soft Skills" }
+  ],
+  "roleRequirements": [
+    {
+      "id": "req-1",
+      "roleTitle": "E-Governance Program Officer",
+      "department": "Cross-Departmental",
+      "requiredSkills": [
+        "Cloud Computing in Public Sector",
+        "Digital Tools & Workflow Automation",
+        "Citizen Centric Service Delivery",
+        "Cybersecurity & Data Privacy (DPDP Act)"
+      ],
+      "description": "Responsible for leading digital service transformation, automated departmental workflows, and ensuring citizen data security."
+    },
+    {
+      "id": "req-2",
+      "roleTitle": "Public Health Data Analyst",
+      "department": "Health & Family Welfare",
+      "requiredSkills": [
+        "Data Analysis & Decision Making",
+        "Digital Tools & Workflow Automation",
+        "Cybersecurity & Data Privacy (DPDP Act)"
+      ],
+      "description": "Analyzes demographic health records, epidemic trends, and dashboard insights while maintaining strict compliance with health data privacy."
+    },
+    {
+      "id": "req-3",
+      "roleTitle": "Field Operations Coordinator",
+      "department": "Rural Development",
+      "requiredSkills": [
+        "Citizen Centric Service Delivery",
+        "Public Financial Management & GeM",
+        "Effective Public Communication & RTI"
+      ],
+      "description": "Coordinates village-level project implementation, field monitoring, and transparent citizen grievance resolution."
+    }
+  ],
+  "courses": [
+    {
+      "id": "course-101",
+      "title": "Foundations of Cloud Infrastructure for Government Portals",
+      "description": "Master GovCloud architecture, scalability, uptime management, and secure hosting for citizen-facing digital public services.",
+      "category": "Cloud & Infrastructure",
+      "instructorId": "user-trainer-1",
+      "instructorName": "Prof. Sunita Deshmukh",
+      "duration": "3.5 Hours",
+      "level": "Intermediate",
+      "skillsTaught": ["Cloud Computing in Public Sector", "Digital Tools & Workflow Automation"],
+      "enrolledCount": 1
+    },
+    {
+      "id": "course-102",
+      "title": "Data-Driven Governance: Analytics for Public Policy",
+      "description": "Transform raw public sector data into actionable executive insights, interactive dashboards, and evidence-based policy plans.",
+      "category": "Data Analytics",
+      "instructorId": "user-trainer-1",
+      "instructorName": "Prof. Sunita Deshmukh",
+      "duration": "5.0 Hours",
+      "level": "Intermediate",
+      "skillsTaught": ["Data Analysis & Decision Making"],
+      "enrolledCount": 1
+    },
+    {
+      "id": "course-103",
+      "title": "Citizen-Centric E-Service Delivery & Grievance Redressal",
+      "description": "Best practices for delivering seamless public services, reducing citizen turnaround time, and resolving CPGRAMS grievances effectively.",
+      "category": "E-Governance",
+      "instructorId": "user-trainer-1",
+      "instructorName": "Prof. Sunita Deshmukh",
+      "duration": "2.5 Hours",
+      "level": "Beginner",
+      "skillsTaught": ["Citizen Centric Service Delivery", "Effective Public Communication & RTI"],
+      "enrolledCount": 1
+    },
+    {
+      "id": "course-104",
+      "title": "Cybersecurity Essentials & DPDP Compliance in Government",
+      "description": "Comprehensive overview of citizen data privacy regulations (Digital Personal Data Protection Act), threat mitigation, and CERT-In protocols.",
+      "category": "Cybersecurity & Compliance",
+      "instructorId": "user-trainer-1",
+      "instructorName": "Prof. Sunita Deshmukh",
+      "duration": "4.0 Hours",
+      "level": "Advanced",
+      "skillsTaught": ["Cybersecurity & Data Privacy (DPDP Act)"],
+      "enrolledCount": 0
+    },
+    {
+      "id": "course-105",
+      "title": "Public Procurement via Government e-Marketplace (GeM)",
+      "description": "Step-by-step masterclass on navigating the GeM portal, direct procurement, competitive bidding, reverse auctions, and GFR rules.",
+      "category": "Public Administration",
+      "instructorId": "user-trainer-1",
+      "instructorName": "Prof. Sunita Deshmukh",
+      "duration": "3.0 Hours",
+      "level": "Beginner",
+      "skillsTaught": ["Public Financial Management & GeM"],
+      "enrolledCount": 0
+    },
+    {
+      "id": "course-106",
+      "title": "Office Automation & Collaborative Digital Workflows",
+      "description": "Master e-Office filing, digital annotations, collaborative document reviews, spreadsheet automation, and digital signature certificates (DSC).",
+      "category": "Digital Productivity",
+      "instructorId": "user-trainer-1",
+      "instructorName": "Prof. Sunita Deshmukh",
+      "duration": "2.5 Hours",
+      "level": "Beginner",
+      "skillsTaught": ["Digital Tools & Workflow Automation"],
+      "enrolledCount": 1
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "enroll-1",
+      "userId": "user-trainee-1",
+      "courseId": "course-103",
+      "courseTitle": "Citizen-Centric E-Service Delivery & Grievance Redressal",
+      "progress": 100,
+      "status": "completed"
+    },
+    {
+      "id": "enroll-2",
+      "userId": "user-trainee-1",
+      "courseId": "course-106",
+      "courseTitle": "Office Automation & Collaborative Digital Workflows",
+      "progress": 40,
+      "status": "in-progress"
+    },
+    {
+      "id": "enroll-3",
+      "userId": "user-trainee-2",
+      "courseId": "course-102",
+      "courseTitle": "Data-Driven Governance: Analytics for Public Policy",
+      "progress": 60,
+      "status": "in-progress"
+    }
+  ]
+}
