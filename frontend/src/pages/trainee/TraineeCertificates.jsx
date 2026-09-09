@@ -1,8 +1,8 @@
-import { Award, Download, CheckCircle, ExternalLink, ShieldCheck } from 'lucide-react';
+import { Award, Download, ShieldCheck } from 'lucide-react';
 
 const CERTS = [
-  { id: 'CC-2024-8841', title: 'DevOps & Enterprise Workflows Professional', issueDate: 'Aug 28, 2024', issuer: 'CapacityConnect L&D', status: 'Verified', color: 'var(--accent-emerald)' },
-  { id: 'CC-2024-7102', title: 'Foundational Web Systems Architecture', issueDate: 'Jul 15, 2024', issuer: 'CapacityConnect L&D', status: 'Verified', color: 'var(--accent-blue)' },
+  { id: 'CC-2024-8841', title: 'Citizen-Centric E-Service Delivery & Grievance Redressal', issueDate: 'Aug 28, 2024', issuer: 'National Institute of Smart Governance (NISG)', status: 'Verified', color: 'var(--accent-emerald)' },
+  { id: 'CC-2024-7102', title: 'Office Automation & Collaborative Digital Workflows', issueDate: 'Jul 15, 2024', issuer: 'DARPG L&D Portal', status: 'Verified', color: 'var(--accent-blue)' },
 ];
 
 export default function TraineeCertificates() {
@@ -13,7 +13,7 @@ export default function TraineeCertificates() {
           My Digital <span className="gradient-text">Certificates & Credentials</span>
         </h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
-          Verified certifications earned through CapacityConnect assessment programs.
+          Verified public sector capacity certifications earned through CapacityConnect assessment programs.
         </p>
       </div>
 
@@ -34,7 +34,7 @@ export default function TraineeCertificates() {
             <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '20px' }}>Issued: {c.issueDate} by {c.issuer}</div>
 
             <button className="btn-glow" style={{ width: '100%', padding: '10px', fontSize: '13px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
-              <Download size={15} /> Download PDF Certificate
+              <Download size={15} /> Download Official PDF Certificate
             </button>
           </div>
         ))}

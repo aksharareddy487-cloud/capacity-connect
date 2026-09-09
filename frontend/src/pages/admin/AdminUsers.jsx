@@ -1,22 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Users, UserPlus, Search, Shield, Filter, Edit, Trash2 } from 'lucide-react';
 
-const USERS_LIST = [
-  { id: 1, name: 'Arjun Sharma', email: 'arjun.sharma@company.com', role: 'trainee', department: 'Engineering', status: 'Active' },
-  { id: 2, name: 'Priya Nair', email: 'priya.nair@company.com', role: 'trainer', department: 'L&D', status: 'Active' },
-  { id: 3, name: 'Rajan Mehta', email: 'rajan.mehta@company.com', role: 'admin', department: 'HR Operations', status: 'Active' },
-  { id: 4, name: 'Rohit Gupta', email: 'rohit.gupta@company.com', role: 'trainee', department: 'Engineering', status: 'At Risk' },
-  { id: 5, name: 'Meera Krishnan', email: 'meera.k@company.com', role: 'trainee', department: 'Product', status: 'Active' },
-  { id: 6, name: 'Ananya Rao', email: 'ananya.rao@company.com', role: 'trainer', department: 'Product', status: 'Active' },
+const SEED_USERS = [
+  { id: 'user-admin-1', name: 'Dr. Ramesh Varma', email: 'admin@capacityconnect.gov.in', role: 'admin', department: 'Department of Administrative Reforms (DARPG)', designation: 'Chief Capacity Building Officer', status: 'Active' },
+  { id: 'user-trainer-1', name: 'Prof. Sunita Deshmukh', email: 'trainer@capacityconnect.gov.in', role: 'trainer', department: 'National Institute of Smart Governance (NISG)', designation: 'Senior E-Governance Lead Trainer', status: 'Active' },
+  { id: 'user-trainee-1', name: 'Aarav Sharma', email: 'trainee@capacityconnect.gov.in', role: 'trainee', department: 'Rural Development & Panchayati Raj', designation: 'Field Operations Assistant', status: 'Active' },
+  { id: 'user-trainee-2', name: 'Ananya Patel', email: 'ananya@capacityconnect.gov.in', role: 'trainee', department: 'Health & Family Welfare', designation: 'Public Health Data Analyst', status: 'Active' },
 ];
 
 export default function AdminUsers() {
+  const [users, setUsers] = useState(SEED_USERS);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('All');
 
-  const filtered = USERS_LIST.filter(u => {
+  useEffect(() => {
+    fetch('/api/admin/stats')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.usersList) {
+          setUsers(data.usersList);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const filtered = users.filter(u => {
     const matchSearch = u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase());
-    const matchRole = roleFilter === 'All' || u.role === roleFilter.toLowerCase();
+    const matchRole = roleFilter === 'All' || u.role.toLowerCase() === roleFilter.toLowerCase();
     return matchSearch && matchRole;
   });
 
@@ -25,14 +35,14 @@ export default function AdminUsers() {
       <div style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 style={{ fontSize: '26px', fontWeight: 800, marginBottom: '6px' }}>
-            User Management & <span className="gradient-text">RBAC Access</span>
+            User Management & <span className="gradient-text">RBAC Directory</span>
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
-            Directory of all employee accounts, roles, and departmental permissions.
+            Central database directory of public administration accounts and role privileges.
           </p>
         </div>
         <button className="btn-glow" style={{ padding: '10px 18px', fontSize: '13px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <UserPlus size={16} /> Add New User
+          <UserPlus size={16} /> Register New Account
         </button>
       </div>
 
@@ -79,8 +89,8 @@ export default function AdminUsers() {
                   {u.role}
                 </td>
                 <td style={{ padding: '14px 20px' }}>
-                  <span style={{ fontSize: '11px', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', background: u.status === 'Active' ? 'rgba(16,185,129,0.15)' : 'rgba(244,63,94,0.15)', color: u.status === 'Active' ? 'var(--accent-emerald)' : 'var(--accent-rose)' }}>
-                    {u.status}
+                  <span style={{ fontSize: '11px', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', background: 'rgba(16,185,129,0.15)', color: 'var(--accent-emerald)' }}>
+                    {u.status || 'Active'}
                   </span>
                 </td>
                 <td style={{ padding: '14px 20px', textAlign: 'right' }}>

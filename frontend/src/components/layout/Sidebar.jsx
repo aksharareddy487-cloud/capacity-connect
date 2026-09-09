@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, BookOpen, ClipboardList, Award, Calendar,
-  Users, BarChart3, PresentationIcon, Shield, Database,
+  Users, BarChart3, Shield, Database,
   ChevronLeft, ChevronRight, GraduationCap
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -11,9 +10,9 @@ const NAV = {
   trainee: [
     { to: '/trainee', icon: LayoutDashboard, label: 'Dashboard' },
     { to: '/trainee/courses', icon: BookOpen, label: 'My Courses' },
-    { to: '/trainee/sessions', icon: Calendar, label: 'Sessions' },
-    { to: '/trainee/progress', icon: BarChart3, label: 'Progress' },
-    { to: '/trainee/certificates', icon: Award, label: 'Certificates' },
+    // { to: '/trainee/sessions', icon: Calendar, label: 'Sessions' },
+    // { to: '/trainee/progress', icon: BarChart3, label: 'Progress' },
+    // { to: '/trainee/certificates', icon: Award, label: 'Certificates' },
   ],
   trainer: [
     { to: '/trainer', icon: LayoutDashboard, label: 'Dashboard' },
@@ -110,27 +109,7 @@ export default function Sidebar({ collapsed, onCollapse }) {
           </NavLink>
         ))}
 
-        {/* Presentation link (always visible) */}
-        <div style={{ borderTop: '1px solid var(--border)', marginTop: '16px', paddingTop: '12px' }}>
-          {!collapsed && (
-            <div style={{ fontSize: '10px', letterSpacing: '1px', color: 'var(--text-secondary)', fontWeight: 700, padding: '0 12px 8px', textTransform: 'uppercase' }}>
-              Resources
-            </div>
-          )}
-          <NavLink to="/presentation" end style={({ isActive }) => ({
-            display: 'flex', alignItems: 'center', gap: '12px',
-            padding: collapsed ? '10px' : '10px 12px',
-            borderRadius: '10px', textDecoration: 'none',
-            color: isActive ? 'white' : 'var(--text-secondary)',
-            background: isActive ? 'rgba(245,158,11,0.2)' : 'transparent',
-            borderLeft: isActive ? '3px solid var(--accent-amber)' : '3px solid transparent',
-            fontSize: '14px', fontWeight: isActive ? 600 : 400,
-            justifyContent: collapsed ? 'center' : 'flex-start',
-          })}>
-            <PresentationIcon size={18} style={{ flexShrink: 0 }} />
-            {!collapsed && <span>Presentation</span>}
-          </NavLink>
-        </div>
+
       </nav>
 
       {/* Collapse toggle */}

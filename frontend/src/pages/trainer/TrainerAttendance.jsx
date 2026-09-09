@@ -1,17 +1,16 @@
 import { useState } from 'react';
-import { ClipboardList, Check, X, Calendar, Save } from 'lucide-react';
+import { ClipboardList, Check, X, Save } from 'lucide-react';
 
 const INITIAL_ROSTER = [
-  { id: 1, name: 'Arjun Sharma', batch: 'Q3', status: 'present', score: 88 },
-  { id: 2, name: 'Meera Krishnan', batch: 'Q3', status: 'present', score: 95 },
-  { id: 3, name: 'Rohit Gupta', batch: 'Q3', status: 'absent', score: 62 },
-  { id: 4, name: 'Sneha Reddy', batch: 'Q3', status: 'present', score: 84 },
-  { id: 5, name: 'Vijay Bose', batch: 'Q4', status: 'present', score: 78 },
+  { id: 1, name: 'Aarav Sharma', batch: 'GovCloud Q3', status: 'present', score: 88 },
+  { id: 2, name: 'Ananya Patel', batch: 'GovCloud Q3', status: 'present', score: 95 },
+  { id: 3, name: 'Rohit Gupta', batch: 'GovCloud Q3', status: 'absent', score: 62 },
+  { id: 4, name: 'Sneha Reddy', batch: 'Data Governance Q3', status: 'present', score: 84 },
+  { id: 5, name: 'Vijay Bose', batch: 'Data Governance Q3', status: 'present', score: 78 },
 ];
 
 export default function TrainerAttendance() {
   const [roster, setRoster] = useState(INITIAL_ROSTER);
-  const [date, setDate] = useState('2026-09-09');
 
   const toggleStatus = (id) => {
     setRoster(prev => prev.map(r => r.id === id ? { ...r, status: r.status === 'present' ? 'absent' : 'present' } : r));
@@ -47,7 +46,7 @@ export default function TrainerAttendance() {
             {roster.map((r, i) => (
               <tr key={r.id} style={{ borderBottom: i < roster.length - 1 ? '1px solid var(--border)' : 'none' }}>
                 <td style={{ padding: '14px 20px', fontWeight: 600, fontSize: '14px' }}>{r.name}</td>
-                <td style={{ padding: '14px 20px', fontSize: '13px', color: 'var(--text-secondary)' }}>Batch {r.batch}</td>
+                <td style={{ padding: '14px 20px', fontSize: '13px', color: 'var(--text-secondary)' }}>{r.batch}</td>
                 <td style={{ padding: '14px 20px', fontSize: '14px', fontWeight: 700, color: 'var(--accent-blue)' }}>{r.score}%</td>
                 <td style={{ padding: '14px 20px', textAlign: 'center' }}>
                   <button

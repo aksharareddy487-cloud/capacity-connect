@@ -2,41 +2,10 @@ import { createContext, useContext, useState, useCallback, useEffect } from 'rea
 
 const AuthContext = createContext(null);
 
-const DEMO_USERS = {
-  trainee: {
-    id: 1,
-    name: 'Arjun Sharma',
-    email: 'arjun.sharma@company.com',
-    role: 'trainee',
-    avatar: 'AS',
-    department: 'Engineering',
-    batch: 'Batch 2024-Q3',
-  },
-  trainer: {
-    id: 2,
-    name: 'Priya Nair',
-    email: 'priya.nair@company.com',
-    role: 'trainer',
-    avatar: 'PN',
-    department: 'Learning & Development',
-    batches: ['Batch 2024-Q3', 'Batch 2024-Q4'],
-  },
-  admin: {
-    id: 3,
-    name: 'Rajan Mehta',
-    email: 'rajan.mehta@company.com',
-    role: 'admin',
-    avatar: 'RM',
-    department: 'HR Operations',
-  },
-};
-
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('capacity_connect_user');
-    return saved ? JSON.parse(saved) : null;
-  });
-  const [token, setToken] = useState(() => localStorage.getItem('capacity_connect_token') || null);
+  // Start with no user logged in by default so app opens directly to /login
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -47,84 +16,57 @@ export function AuthProvider({ children }) {
     }
   }, [user]);
 
-  // Demo login
-  const loginDemo = useCallback((role) => {
-    const demoUser = DEMO_USERS[role] ?? DEMO_USERS.trainee;
-    setUser(demoUser);
-    setToken('demo_jwt_token_' + role);
-    localStorage.setItem('capacity_connect_token', 'demo_jwt_token_' + role);
+  // Real backend database authentication only
+  const loginApi = useCallback(async (email, password) => {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(res.status === 404 ? 'API server endpoint not found.' : 'Server returned an invalid response.');
+    }
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Invalid email or password.');
+    }
+
+    const userData = {
+      ...data.user,
+      avatar: data.user.name ? data.user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'U',
+    };
+    setUser(userData);
+    setToken(data.token);
+    localStorage.setItem('capacity_connect_token', data.token);
+    return { success: true, user: userData };
   }, []);
 
-  // Real backend API login
-  const loginApi = useCallback(async (email, password) => {
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Login failed');
-      }
-      const userData = {
-        ...data.user,
-        avatar: data.user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2),
-      };
-      setUser(userData);
-      setToken(data.token);
-      localStorage.setItem('capacity_connect_token', data.token);
-      return { success: true, user: userData };
-    } catch (err) {
-      // Fallback: If demo email match or offline demo fallback
-      if (email.includes('arjun') || email.includes('trainee')) {
-        loginDemo('trainee');
-        return { success: true, user: DEMO_USERS.trainee };
-      } else if (email.includes('priya') || email.includes('trainer')) {
-        loginDemo('trainer');
-        return { success: true, user: DEMO_USERS.trainer };
-      } else if (email.includes('rajan') || email.includes('admin')) {
-        loginDemo('admin');
-        return { success: true, user: DEMO_USERS.admin };
-      }
-      throw err;
-    }
-  }, [loginDemo]);
+  // Real backend database signup - creates account without auto-logging in
+  const signupApi = useCallback(async ({ name, email, password, role, department, designation, targetRole }) => {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, role, department, designation, targetRole }),
+    });
 
-  // Real backend API signup
-  const signupApi = useCallback(async ({ name, email, password, role, department }) => {
+    const text = await res.text();
+    let data;
     try {
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, role, department }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Registration failed');
-      }
-      const userData = {
-        ...data.user,
-        avatar: data.user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2),
-      };
-      setUser(userData);
-      setToken(data.token);
-      localStorage.setItem('capacity_connect_token', data.token);
-      return { success: true, user: userData };
-    } catch (err) {
-      // Offline fallback: create local user session
-      const newUser = {
-        id: Date.now(),
-        name,
-        email,
-        role: role || 'trainee',
-        avatar: name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'U',
-        department: department || 'General',
-      };
-      setUser(newUser);
-      setToken('local_token_' + Date.now());
-      return { success: true, user: newUser };
+      data = JSON.parse(text);
+    } catch {
+      throw new Error('Server returned an invalid response during registration.');
     }
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Registration failed.');
+    }
+
+    return { success: true, message: data.message || 'Account registered successfully.', email: data.user?.email || email };
   }, []);
 
   const logout = useCallback(() => {
@@ -134,15 +76,9 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('capacity_connect_token');
   }, []);
 
-  const switchRole = useCallback((role) => {
-    const demoUser = DEMO_USERS[role] ?? DEMO_USERS.trainee;
-    setUser(demoUser);
-    setToken('demo_jwt_token_' + role);
-  }, []);
-
   return (
     <AuthContext.Provider value={{
-      user, token, loginDemo, loginApi, signupApi, logout, switchRole, isAuthenticated: !!user
+      user, token, loginApi, signupApi, logout, isAuthenticated: !!user
     }}>
       {children}
     </AuthContext.Provider>

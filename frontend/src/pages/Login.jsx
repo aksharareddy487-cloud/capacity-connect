@@ -2,20 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
-  GraduationCap, Briefcase, Shield, ArrowRight, Zap, Mail, Lock, User, Building, UserPlus, LogIn, AlertCircle
+  ArrowRight, Zap, Mail, Lock, User, UserPlus, LogIn, AlertCircle, CheckCircle, Database
 } from 'lucide-react';
 
-const DEMO_ROLES = [
-  { key: 'trainee', label: 'Trainee', icon: GraduationCap, color: 'var(--accent-emerald)', path: '/trainee', desc: 'Explore courses & certificates' },
-  { key: 'trainer', label: 'Trainer', icon: Briefcase, color: 'var(--accent-blue)', path: '/trainer', desc: 'Manage batches & analytics' },
-  { key: 'admin', label: 'Admin', icon: Shield, color: 'var(--accent-rose)', path: '/admin', desc: 'Org capacity & user admin' },
-];
-
 export default function Login() {
-  const { loginDemo, loginApi, signupApi } = useAuth();
+  const { loginApi, signupApi } = useAuth();
   const navigate = useNavigate();
 
-  // Tab state: 'login', 'signup', or 'demo'
+  // ONLY 2 Tabs: 'login' or 'signup'
   const [tab, setTab] = useState('login');
 
   // Form states
@@ -23,15 +17,17 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState('trainee');
-  const [department, setDepartment] = useState('Engineering');
+  const [department, setDepartment] = useState('Rural Development & Panchayati Raj');
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
 
   // Handle Sign In Submit
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
     if (!email || !password) {
       setError('Please enter both email and password.');
       return;
@@ -41,16 +37,17 @@ export default function Login() {
       const result = await loginApi(email, password);
       navigate(`/${result.user.role || 'trainee'}`);
     } catch (err) {
-      setError(err.message || 'Login failed. Please check credentials.');
+      setError(err.message || 'Login failed. Account not found or password incorrect.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle Sign Up Submit
+  // Handle Sign Up Submit -> Navigates to Sign In tab with success message
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
     if (!name || !email || !password) {
       setError('Please fill in all required fields.');
       return;
@@ -58,7 +55,9 @@ export default function Login() {
     setLoading(true);
     try {
       const result = await signupApi({ name, email, password, role, department });
-      navigate(`/${result.user.role || 'trainee'}`);
+      setSuccessMsg('Account created successfully in database! Please sign in with your credentials.');
+      setTab('login');
+      setPassword('');
     } catch (err) {
       setError(err.message || 'Registration failed.');
     } finally {
@@ -66,14 +65,11 @@ export default function Login() {
     }
   };
 
-  // Handle Quick Demo Click
-  const handleDemoClick = (roleObj) => {
+  const fillCredential = (demoEmail, demoPass) => {
+    setEmail(demoEmail);
+    setPassword(demoPass);
     setError('');
-    setLoading(true);
-    setTimeout(() => {
-      loginDemo(roleObj.key);
-      navigate(roleObj.path);
-    }, 400);
+    setSuccessMsg('');
   };
 
   return (
@@ -81,7 +77,7 @@ export default function Login() {
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: '24px 16px', position: 'relative', overflow: 'hidden',
     }}>
-      {/* Orbs */}
+      {/* Background Orbs */}
       <div style={{
         position: 'absolute', width: '500px', height: '500px', borderRadius: '50%',
         background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)',
@@ -93,46 +89,45 @@ export default function Login() {
         bottom: '-50px', right: '-80px', pointerEvents: 'none',
       }} />
 
-      <div className="fade-in" style={{ width: '100%', maxWidth: '480px', textAlign: 'center' }}>
-        {/* Logo */}
-        <div style={{ marginBottom: '32px' }}>
+      <div className="fade-in" style={{ width: '100%', maxWidth: '460px', textAlign: 'center' }}>
+        {/* Logo Header */}
+        <div style={{ marginBottom: '28px' }}>
           <div style={{
-            width: '60px', height: '60px', borderRadius: '18px', margin: '0 auto 14px',
+            width: '56px', height: '56px', borderRadius: '16px', margin: '0 auto 12px',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             background: 'linear-gradient(135deg, var(--accent-blue), var(--accent-violet))',
-            boxShadow: '0 0 40px rgba(99,102,241,0.4)',
+            boxShadow: '0 0 35px rgba(99,102,241,0.4)',
           }}>
-            <Zap size={30} color="white" />
+            <Zap size={28} color="white" />
           </div>
-          <h1 className="gradient-text" style={{ fontSize: '30px', fontWeight: 800, letterSpacing: '-1px', marginBottom: '6px' }}>
+          <h1 className="gradient-text" style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.5px', marginBottom: '4px' }}>
             CapacityConnect
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: 1.5 }}>
-            Digital Capacity Building & Learning Management Portal
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>
+            National Public Sector Capacity Building Portal
           </p>
         </div>
 
-        {/* Card */}
+        {/* Form Container Glass */}
         <div className="glass" style={{ padding: '28px', textAlign: 'left' }}>
 
-          {/* Mode Switcher Tabs */}
+          {/* EXACTLY 2 TABS: Sign In and Sign Up */}
           <div style={{
             display: 'flex', background: 'rgba(255,255,255,0.05)', padding: '4px',
-            borderRadius: '12px', marginBottom: '24px', border: '1px solid var(--border)',
+            borderRadius: '12px', marginBottom: '20px', border: '1px solid var(--border)',
           }}>
             {[
               { id: 'login', label: 'Sign In', icon: LogIn },
               { id: 'signup', label: 'Sign Up', icon: UserPlus },
-              { id: 'demo', label: 'Quick Demo', icon: Zap },
             ].map(t => {
               const Icon = t.icon;
               const active = tab === t.id;
               return (
                 <button
                   key={t.id}
-                  onClick={() => { setTab(t.id); setError(''); }}
+                  onClick={() => { setTab(t.id); setError(''); setSuccessMsg(''); }}
                   style={{
-                    flex: 1, padding: '9px 12px', borderRadius: '9px', border: 'none',
+                    flex: 1, padding: '10px', borderRadius: '9px', border: 'none',
                     background: active ? 'linear-gradient(135deg, var(--accent-blue), var(--accent-violet))' : 'transparent',
                     color: active ? 'white' : 'var(--text-secondary)',
                     fontWeight: active ? 700 : 500, fontSize: '13px', cursor: 'pointer',
@@ -140,20 +135,33 @@ export default function Login() {
                     transition: 'all 0.2s',
                   }}
                 >
-                  <Icon size={14} /> {t.label}
+                  <Icon size={15} /> {t.label}
                 </button>
               );
             })}
           </div>
 
-          {/* Error Message Alert */}
+          {/* Success Banner */}
+          {successMsg && (
+            <div style={{
+              padding: '12px 14px', borderRadius: '10px', marginBottom: '18px',
+              background: 'rgba(16,185,129,0.14)', border: '1px solid rgba(16,185,129,0.35)',
+              color: 'var(--accent-emerald)', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px',
+              fontWeight: 600
+            }}>
+              <CheckCircle size={17} style={{ flexShrink: 0 }} /> {successMsg}
+            </div>
+          )}
+
+          {/* Error Banner */}
           {error && (
             <div style={{
-              padding: '12px', borderRadius: '10px', marginBottom: '18px',
-              background: 'rgba(244,63,94,0.12)', border: '1px solid rgba(244,63,94,0.3)',
+              padding: '12px 14px', borderRadius: '10px', marginBottom: '18px',
+              background: 'rgba(244,63,94,0.14)', border: '1px solid rgba(244,63,94,0.35)',
               color: 'var(--accent-rose)', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px',
+              fontWeight: 600
             }}>
-              <AlertCircle size={16} style={{ flexShrink: 0 }} /> {error}
+              <AlertCircle size={17} style={{ flexShrink: 0 }} /> {error}
             </div>
           )}
 
@@ -172,7 +180,7 @@ export default function Login() {
                   <Mail size={16} color="var(--text-secondary)" />
                   <input
                     type="email"
-                    placeholder="name@company.com"
+                    placeholder="e.g. trainee@capacityconnect.gov.in"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     style={{ background: 'none', border: 'none', outline: 'none', color: 'var(--text-primary)', width: '100%', fontSize: '14px' }}
@@ -204,15 +212,36 @@ export default function Login() {
                 type="submit"
                 disabled={loading}
                 className="btn-glow"
-                style={{ width: '100%', marginTop: '6px', padding: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                style={{ width: '100%', marginTop: '4px', padding: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
               >
-                {loading ? 'Authenticating…' : 'Sign In'} <ArrowRight size={16} />
+                {loading ? 'Verifying with Database…' : 'Sign In'} <ArrowRight size={16} />
               </button>
 
+              {/* Database Seeded Credentials Reference */}
+              <div style={{
+                marginTop: '12px', padding: '12px', borderRadius: '10px',
+                background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', fontSize: '11px',
+              }}>
+                <div style={{ fontWeight: 700, color: 'var(--accent-blue)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Database size={13} /> Seeded Database Accounts:
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <button type="button" onClick={() => fillCredential('trainee@capacityconnect.gov.in', 'trainee123')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', textAlign: 'left', cursor: 'pointer', fontSize: '11px' }}>
+                    🟢 <strong>Trainee:</strong> trainee@capacityconnect.gov.in (pass: trainee123)
+                  </button>
+                  <button type="button" onClick={() => fillCredential('trainer@capacityconnect.gov.in', 'trainer123')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', textAlign: 'left', cursor: 'pointer', fontSize: '11px' }}>
+                    🔵 <strong>Trainer:</strong> trainer@capacityconnect.gov.in (pass: trainer123)
+                  </button>
+                  <button type="button" onClick={() => fillCredential('admin@capacityconnect.gov.in', 'admin123')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', textAlign: 'left', cursor: 'pointer', fontSize: '11px' }}>
+                    🔴 <strong>Admin:</strong> admin@capacityconnect.gov.in (pass: admin123)
+                  </button>
+                </div>
+              </div>
+
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', textAlign: 'center', marginTop: '4px' }}>
-                Don't have an account?{' '}
-                <button type="button" onClick={() => setTab('signup')} style={{ color: 'var(--accent-blue)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
-                  Create Account
+                Need a new account?{' '}
+                <button type="button" onClick={() => { setTab('signup'); setError(''); setSuccessMsg(''); }} style={{ color: 'var(--accent-blue)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
+                  Create Account via Sign Up
                 </button>
               </div>
             </form>
@@ -229,7 +258,7 @@ export default function Login() {
                   <User size={16} color="var(--text-secondary)" />
                   <input
                     type="text"
-                    placeholder="e.g. Rahul Sharma"
+                    placeholder="e.g. Ramesh Kumar"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     style={{ background: 'none', border: 'none', outline: 'none', color: 'var(--text-primary)', width: '100%', fontSize: '14px' }}
@@ -245,7 +274,7 @@ export default function Login() {
                   <Mail size={16} color="var(--text-secondary)" />
                   <input
                     type="email"
-                    placeholder="rahul@company.com"
+                    placeholder="ramesh@gov.in"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     style={{ background: 'none', border: 'none', outline: 'none', color: 'var(--text-primary)', width: '100%', fontSize: '14px' }}
@@ -261,7 +290,7 @@ export default function Login() {
                   <Lock size={16} color="var(--text-secondary)" />
                   <input
                     type="password"
-                    placeholder="Create a strong password"
+                    placeholder="Create a secure password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     style={{ background: 'none', border: 'none', outline: 'none', color: 'var(--text-primary)', width: '100%', fontSize: '14px' }}
@@ -299,10 +328,10 @@ export default function Login() {
                       borderRadius: '10px', padding: '10px 12px', color: 'var(--text-primary)', fontSize: '13px', outline: 'none',
                     }}
                   >
-                    <option value="Engineering">Engineering</option>
-                    <option value="Product & Design">Product & Design</option>
-                    <option value="Sales & Marketing">Sales & Marketing</option>
-                    <option value="HR & Operations">HR & Operations</option>
+                    <option value="Rural Development & Panchayati Raj">Rural Development</option>
+                    <option value="Department of Administrative Reforms (DARPG)">DARPG</option>
+                    <option value="National Institute of Smart Governance (NISG)">NISG</option>
+                    <option value="Health & Family Welfare">Health & Welfare</option>
                   </select>
                 </div>
               </div>
@@ -311,63 +340,18 @@ export default function Login() {
                 type="submit"
                 disabled={loading}
                 className="btn-glow"
-                style={{ width: '100%', marginTop: '6px', padding: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                style={{ width: '100%', marginTop: '4px', padding: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
               >
-                {loading ? 'Creating Account…' : 'Register Account'} <UserPlus size={16} />
+                {loading ? 'Saving to Database…' : 'Register Account'} <UserPlus size={16} />
               </button>
 
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', textAlign: 'center' }}>
-                Already have an account?{' '}
-                <button type="button" onClick={() => setTab('login')} style={{ color: 'var(--accent-blue)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
+                Already registered?{' '}
+                <button type="button" onClick={() => { setTab('login'); setError(''); setSuccessMsg(''); }} style={{ color: 'var(--accent-blue)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
                   Sign In
                 </button>
               </div>
             </form>
-          )}
-
-          {/* TAB 3: QUICK DEMO LAUNCHER */}
-          {tab === 'demo' && (
-            <div>
-              <div style={{ marginBottom: '16px' }}>
-                <h3 style={{ fontSize: '15px', fontWeight: 700, marginBottom: '4px' }}>Instant Role Launcher</h3>
-                <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                  Click any role card to launch the live portal immediately without signing up.
-                </p>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {DEMO_ROLES.map((r) => {
-                  const Icon = r.icon;
-                  return (
-                    <button
-                      key={r.key}
-                      onClick={() => handleDemoClick(r)}
-                      disabled={loading}
-                      style={{
-                        display: 'flex', alignItems: 'center', gap: '14px',
-                        padding: '14px 16px', borderRadius: '12px', border: '1px solid var(--border)',
-                        background: 'rgba(255,255,255,0.03)', cursor: 'pointer', textAlign: 'left',
-                        transition: 'all 0.2s',
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.background = `${r.color}15`; e.currentTarget.style.borderColor = `${r.color}40`; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
-                    >
-                      <div style={{
-                        width: '40px', height: '40px', borderRadius: '10px', flexShrink: 0,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        background: `${r.color}22`, border: `1px solid ${r.color}44`,
-                      }}>
-                        <Icon size={20} color={r.color} />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-primary)' }}>{r.label}</div>
-                        <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{r.desc}</div>
-                      </div>
-                      <ArrowRight size={15} color="var(--text-secondary)" />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
           )}
 
         </div>

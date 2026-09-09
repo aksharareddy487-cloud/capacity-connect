@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Calendar, Clock, Video, MapPin, User, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, Video, User, CheckCircle2 } from 'lucide-react';
 
 const SESSIONS = [
-  { id: 1, title: 'Live Q&A & Code Review – React Advanced Patterns', trainer: 'Priya Nair', time: 'Today, 3:00 PM - 4:30 PM', status: 'Live Soon', type: 'Virtual Workshop', link: 'https://meet.google.com/demo-cc', color: 'var(--accent-blue)', batch: 'Batch 2024-Q3' },
-  { id: 2, title: 'Hands-on Lab: AWS EC2 & S3 Deployment', trainer: 'Ananya Rao', time: 'Sep 11, 10:00 AM - 12:00 PM', status: 'Scheduled', type: 'Lab Session', link: '#', color: 'var(--accent-emerald)', batch: 'Batch 2024-Q3' },
-  { id: 3, title: 'Node.js Microservices Assessment Review', trainer: 'Rajesh Kumar', time: 'Sep 13, 2:00 PM - 3:30 PM', status: 'Scheduled', type: 'Assessment', link: '#', color: 'var(--accent-amber)', batch: 'Batch 2024-Q3' },
-  { id: 4, title: 'System Design Mock Architecture Discussion', trainer: 'Siddharth Jain', time: 'Sep 15, 11:00 AM - 1:00 PM', status: 'Scheduled', type: 'Discussion', link: '#', color: 'var(--accent-violet)', batch: 'Batch 2024-Q3' },
-  { id: 5, title: 'Orientation & Learning Roadmap Briefing', trainer: 'Priya Nair', time: 'Sep 1, 10:00 AM', status: 'Completed', type: 'Orientation', link: '#', color: 'var(--accent-cyan)', batch: 'Batch 2024-Q3' },
+  { id: 1, title: 'Live Q&A & Lab – Foundations of Cloud Infrastructure for Government Portals', trainer: 'Prof. Sunita Deshmukh', time: 'Today, 3:00 PM - 4:30 PM', status: 'Live Soon', type: 'Virtual Workshop', link: 'https://meet.google.com/demo-capacity-connect', color: 'var(--accent-blue)', batch: 'GovCloud Batch 2024-Q3' },
+  { id: 2, title: 'Hands-on Lab: District Dashboard Analytics & KPI Formulation', trainer: 'Prof. Sunita Deshmukh', time: 'Sep 11, 10:00 AM - 12:00 PM', status: 'Scheduled', type: 'Lab Session', link: '#', color: 'var(--accent-emerald)', batch: 'Data Governance Batch 2024-Q3' },
+  { id: 3, title: 'DPDP Act 2023 Principles & CERT-In Protocols Assessment', trainer: 'Prof. Sunita Deshmukh', time: 'Sep 13, 2:00 PM - 3:30 PM', status: 'Scheduled', type: 'Assessment', link: '#', color: 'var(--accent-amber)', batch: 'GovCloud Batch 2024-Q3' },
+  { id: 4, title: 'CPGRAMS Citizen Grievance Redressal SLA Review', trainer: 'Prof. Sunita Deshmukh', time: 'Sep 15, 11:00 AM - 1:00 PM', status: 'Scheduled', type: 'Workshop', link: '#', color: 'var(--accent-violet)', batch: 'E-Service Delivery Batch 2024-Q3' },
+  { id: 5, title: 'Orientation & National Capacity Building Roadmap Briefing', trainer: 'Prof. Sunita Deshmukh', time: 'Sep 1, 10:00 AM', status: 'Completed', type: 'Orientation', link: '#', color: 'var(--accent-cyan)', batch: 'GovCloud Batch 2024-Q3' },
 ];
 
 export default function TraineeSessions() {
@@ -17,7 +17,7 @@ export default function TraineeSessions() {
           Training <span className="gradient-text">Sessions & Schedule</span>
         </h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
-          Join live virtual workshops, lab sessions, and Q&A hours.
+          Join live virtual workshops, lab sessions, and Q&A hours for capacity building.
         </p>
       </div>
 
@@ -41,7 +41,7 @@ export default function TraineeSessions() {
             <div>
               {s.status === 'Live Soon' ? (
                 <a href={s.link} target="_blank" rel="noreferrer" className="btn-glow" style={{ padding: '10px 20px', borderRadius: '10px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
-                  <Video size={16} /> Join Session Now
+                  <Video size={16} /> Join Live Workshop
                 </a>
               ) : s.status === 'Completed' ? (
                 <span style={{ fontSize: '13px', color: 'var(--accent-emerald)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(16,185,129,0.12)', padding: '8px 16px', borderRadius: '10px' }}>
